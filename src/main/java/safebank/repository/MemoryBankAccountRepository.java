@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class memoryBankAccountRepository implements BankAccountRepository{
+public class MemoryBankAccountRepository implements BankAccountRepository{
 
     private final Map<String, BankAccount> storage = new HashMap<>();
 
