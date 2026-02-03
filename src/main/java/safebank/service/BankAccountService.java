@@ -19,15 +19,15 @@ public class BankAccountService {
     }
 
     public void deposit(String accountId, int amount){
-        BankAccount account = repository.findbyId(accountId).
-                orElseThrow(() -> new IllegalArgumentException("Account not found: " + accountId));
+        BankAccount account = repository.findbyId(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("Account not found: " + accountId));
         account.deposit(amount);
         repository.save(account);
     }
 
     public void withdraw(String accountId, int amount){
-        BankAccount account = repository.findbyId(accountId).
-                orElseThrow(() -> new IllegalArgumentException("Account not found: " + accountId));
+        BankAccount account = repository.findbyId(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("Account not found: " + accountId));
         account.withdraw(amount);
         repository.save(account);
     }
