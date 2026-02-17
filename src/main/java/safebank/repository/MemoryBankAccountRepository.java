@@ -11,7 +11,7 @@ public class MemoryBankAccountRepository implements BankAccountRepository{
     private final Map<String, BankAccount> storage = new HashMap<>();
 
     @Override
-    public Optional<BankAccount> findbyId(String accountId) {
+    public Optional<BankAccount> findById(String accountId) {
         return Optional.ofNullable(storage.get(accountId));
     }
 

@@ -45,14 +45,6 @@ public class BankAccount {
         }
     }
 
-    public String getId(){
-        return id;
-    }
-
-    public int getBalance(){
-        return balance;
-    }
-
     public void lock(){
         lockStatus = true;
     }
@@ -62,7 +54,15 @@ public class BankAccount {
     }
 
     public boolean isLocked(){
-            return lockStatus;
+        return lockStatus;
+    }
+
+    public String getId(){
+        return id;
+    }
+
+    public int getBalance(){
+        return balance;
     }
 
     public List<Transaction> getTransactionHistory(){

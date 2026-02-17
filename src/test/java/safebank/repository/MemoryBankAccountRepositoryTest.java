@@ -25,16 +25,16 @@ class MemoryBankAccountRepositoryTest {
     }
 
     @Test
-    public void findbyId_returnAccount_whenExists(){
-        Optional<BankAccount> result = bankRepo.findbyId("AC-DE-2026-01");
+    public void findById_returnAccount_whenExists(){
+        Optional<BankAccount> result = bankRepo.findById("AC-DE-2026-01");
 
         assertTrue(result.isPresent());
         assertEquals("AC-DE-2026-01", result.get().getId());
     }
 
     @Test
-    public void findbyId_returnEmpty_whenAccountNotExists(){
-        Optional<BankAccount> result = bankRepo.findbyId("AC-DE-2026-02");
+    public void findById_returnEmpty_whenAccountNotExists(){
+        Optional<BankAccount> result = bankRepo.findById("AC-DE-2026-02");
 
         assertTrue(result.isEmpty());
     }

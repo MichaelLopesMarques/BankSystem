@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface BankAccountRepository {
 
-    Optional<BankAccount> findbyId(String accountId);
+    Optional<BankAccount> findById(String accountId);
 
     void save(BankAccount account);
 
