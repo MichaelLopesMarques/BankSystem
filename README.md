@@ -75,7 +75,6 @@ mvn test
 ------------------------------------------------
 **Zukünftige Erweiterungen**
 -
--[ ] Fertigstellung der Tests und hinzufügen der Dokumentation
 
 -[ ] Anbindung einer SQL-Datenbank (JDBC/JPA Repository).
 

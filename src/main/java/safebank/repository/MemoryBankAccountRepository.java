@@ -21,7 +21,7 @@ public class MemoryBankAccountRepository implements BankAccountRepository{
     }
 
     @Override
-    public boolean existsByID(String accountId) {
+    public boolean existsById(String accountId) {
         return storage.containsKey(accountId);
     }
 }

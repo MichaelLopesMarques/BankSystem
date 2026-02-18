@@ -10,5 +10,5 @@ public interface BankAccountRepository {
 
     void save(BankAccount account);
 
-    boolean existsByID(String accountId);
+    boolean existsById(String accountId);
 }

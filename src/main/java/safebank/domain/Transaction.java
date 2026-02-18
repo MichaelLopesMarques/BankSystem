@@ -1,22 +1,24 @@
 package safebank.domain;
 
+import java.math.BigDecimal;
+
 public class Transaction {
 
     private final String type;
-    private final int amount;
-    private final int balanceAfter;
+    private final BigDecimal amount;
+    private final BigDecimal balanceAfter;
 
-    public Transaction(String type, int amount, int balanceAfter){
+    public Transaction(String type, BigDecimal amount, BigDecimal balanceAfter){
         this.type = type;
         this.amount = amount;
         this.balanceAfter = balanceAfter;
     }
 
-    public static Transaction deposit(int amount, int balance){
+    public static Transaction deposit(BigDecimal amount, BigDecimal balance){
         return new Transaction("DEPOSIT", amount, balance);
     }
 
-    public static Transaction withdraw(int amount, int balance){
+    public static Transaction withdraw(BigDecimal amount, BigDecimal balance){
         return new Transaction("WITHDRAW", amount, balance);
     }
 
@@ -24,11 +26,11 @@ public class Transaction {
         return type;
     }
 
-    public int getAmount(){
+    public BigDecimal getAmount(){
         return amount;
     }
 
-    public int getBalanceAfter(){
+    public BigDecimal getBalanceAfter(){
         return balanceAfter;
     }
 }

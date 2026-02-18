@@ -2,6 +2,7 @@ package safebank.domain;
 
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,19 +12,19 @@ class TransactionTest {
     // Transaction deposit() Tests
     @Test
     public void deposit_Transaction_return(){
-        Transaction transaction = Transaction.deposit(50, 450);
+        Transaction transaction = Transaction.deposit(BigDecimal.valueOf(50), BigDecimal.valueOf(450));
         assertAll("Transaction fields",
                 () -> assertEquals("DEPOSIT", transaction.getType()),
-                () -> assertEquals(50, transaction.getAmount()),
-                () -> assertEquals(450, transaction.getBalanceAfter())
+                () -> assertEquals(BigDecimal.valueOf(50), transaction.getAmount()),
+                () -> assertEquals(BigDecimal.valueOf(450), transaction.getBalanceAfter())
         );
     }
 
     @Test
     public void deposit_trackingOfTransactionhistory(){
-        BankAccount account = new BankAccount("AC-DE-2026-01");
+        BankAccount account = new BankAccount("AC-DE-2026-01", "Michael Marques");
 
-        account.deposit(100);
+        account.deposit(BigDecimal.valueOf(100));
         List<Transaction> history = account.getTransactionHistory();
 
         assertEquals(1, history.size());
@@ -31,8 +32,8 @@ class TransactionTest {
 
         assertAll("Transaction fields",
                 () -> assertEquals("DEPOSIT", lastTransaction.getType()),
-                () -> assertEquals(100, lastTransaction.getAmount()),
-                () -> assertEquals(100, lastTransaction.getBalanceAfter())
+                () -> assertEquals(BigDecimal.valueOf(100), lastTransaction.getAmount()),
+                () -> assertEquals(BigDecimal.valueOf(100), lastTransaction.getBalanceAfter())
         );
 
     }
@@ -42,20 +43,20 @@ class TransactionTest {
     // Transaction withdraw() Tests
     @Test
     public void withdraw_Transaction_return(){
-        Transaction transaction = Transaction.withdraw(50, 450);
+        Transaction transaction = Transaction.withdraw(BigDecimal.valueOf(50), BigDecimal.valueOf(450));
         assertAll("Transaction fields",
                 () -> assertEquals("WITHDRAW", transaction.getType()),
-                () -> assertEquals(50, transaction.getAmount()),
-                () -> assertEquals(450, transaction.getBalanceAfter())
+                () -> assertEquals(BigDecimal.valueOf(50), transaction.getAmount()),
+                () -> assertEquals(BigDecimal.valueOf(450), transaction.getBalanceAfter())
         );
     }
 
     @Test
     public void withdraw_trackingOfTransactionhistory(){
-        BankAccount account = new BankAccount("AC-DE-2026-01");
+        BankAccount account = new BankAccount("AC-DE-2026-01", "Michael Marques");
 
-        account.deposit(200);
-        account.withdraw(100);
+        account.deposit(BigDecimal.valueOf(200));
+        account.withdraw(BigDecimal.valueOf(100));
         List<Transaction> history = account.getTransactionHistory();
 
         assertEquals(2, history.size());
@@ -63,8 +64,8 @@ class TransactionTest {
 
         assertAll("Transaction fields",
                 () -> assertEquals("WITHDRAW", lastTransaction.getType()),
-                () -> assertEquals(100, lastTransaction.getAmount()),
-                () -> assertEquals(100, lastTransaction.getBalanceAfter())
+                () -> assertEquals(BigDecimal.valueOf(100), lastTransaction.getAmount()),
+                () -> assertEquals(BigDecimal.valueOf(100), lastTransaction.getBalanceAfter())
         );
 
     }

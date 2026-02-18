@@ -17,7 +17,7 @@ class MemoryBankAccountRepositoryTest {
 
     @BeforeEach
     void setUp(){
-        account = new BankAccount("AC-DE-2026-01");
+        account = new BankAccount("AC-DE-2026-01", "Michael Marques");
         bankRepo = new MemoryBankAccountRepository();
         bankService = new BankAccountService(bankRepo);
 
@@ -41,18 +41,18 @@ class MemoryBankAccountRepositoryTest {
 
     @Test
     public void save_returnTrue_whenExists(){
-        BankAccount testAccount = new BankAccount("AC-DE-2026-02");
+        BankAccount testAccount = new BankAccount("AC-DE-2026-02", "Anton Marques");
         bankRepo.save(testAccount);
-        assertTrue(bankRepo.existsByID("AC-DE-2026-02"));
+        assertTrue(bankRepo.existsById("AC-DE-2026-02"));
     }
 
     @Test
     public void existsByID_returnTrue_whenExists(){
-        assertTrue(bankRepo.existsByID("AC-DE-2026-01"));
+        assertTrue(bankRepo.existsById("AC-DE-2026-01"));
     }
 
     @Test
     public void existsByID_returnFalse_whenAccountNotExists(){
-        assertFalse(bankRepo.existsByID("AC-DE-2026-03"));
+        assertFalse(bankRepo.existsById("AC-DE-2026-03"));
     }
 }

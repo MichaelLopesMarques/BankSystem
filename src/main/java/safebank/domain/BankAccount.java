@@ -4,6 +4,7 @@ import safebank.exception.AccountLockedException;
 import safebank.exception.InsufficientBalanceException;
 import safebank.exception.InvalidAmountException;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,39 +12,49 @@ public class BankAccount {
 
     private List<Transaction> transactions = new ArrayList<>();
     private final String id;
-    private int balance = 0;
+    private String owner;
+    private BigDecimal balance = BigDecimal.ZERO;
     private boolean lockStatus = false;
 
-    public BankAccount(String id){
+    public BankAccount(String id, String owner){
         this.id = id;
+        this.owner = owner;
+        this.balance = BigDecimal.ZERO;
     }
 
-    public void deposit(int amount){
+    public BankAccount(String id, String owner, BigDecimal balance) {
+        this.id = id;
+        this.owner = owner;
+        this.balance = balance;
+    }
+
+    public void deposit(BigDecimal amount){
         if (lockStatus){
-            throw new AccountLockedException("Account is locked");
+            throw new AccountLockedException("Account ist gesperrt");
         }
-        if(amount > 0) {
-            balance += amount;
+        if(balance.compareTo(amount) < 0) {
+            balance = balance.add(amount);
             transactions.add(Transaction.deposit(amount, balance));
         } else {
-            throw new InvalidAmountException("Amount: " + amount + " must be above 0");
+            throw new InvalidAmountException("Betrag: " + amount + " muss über 0 sein");
         }
     }
 
-    public void withdraw(int amount){
-        if (lockStatus){
-            throw new AccountLockedException("Account is locked");
+    public void withdraw(BigDecimal amount) {
+        if (lockStatus) {
+            throw new AccountLockedException("Account ist gesperrt");
         }
-        if (amount <= 0){
-            throw new InvalidAmountException("Amount: " + amount + " is not positive");
+        if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new InvalidAmountException("Betrag muss positiv sein: " + amount);
         }
-        if(amount <= balance) {
-            balance -= amount;
-            transactions.add(Transaction.withdraw(amount, balance));
-        } else{
-            throw new InsufficientBalanceException("Error! Balance: " + balance + ", Requested: " + amount);
+        if (balance.compareTo(amount) < 0) {
+            throw new InsufficientBalanceException(
+                    "Error! Guthaben: " + balance + ", Verlangt: " + amount);
         }
+        balance = balance.subtract(amount);
+        transactions.add(Transaction.withdraw(amount, balance));
     }
+
 
     public void lock(){
         lockStatus = true;
@@ -61,7 +72,9 @@ public class BankAccount {
         return id;
     }
 
-    public int getBalance(){
+    public String getOwner(){ return owner; }
+
+    public BigDecimal getBalance(){
         return balance;
     }
 

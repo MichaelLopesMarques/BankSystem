@@ -3,6 +3,8 @@ package safebank.service;
 import safebank.domain.BankAccount;
 import safebank.repository.BankAccountRepository;
 
+import java.math.BigDecimal;
+
 public class BankAccountService {
 
     private final BankAccountRepository repository;
@@ -11,28 +13,28 @@ public class BankAccountService {
         this.repository = repository;
     }
 
-    public void createAccount(String accountId){
-        if (repository.existsByID(accountId)){
+    public void createAccount(String accountId, String name){
+        if (repository.existsById(accountId)){
             throw new IllegalStateException("Account already exists!");
         }
-        repository.save(new BankAccount(accountId));
+        repository.save(new BankAccount(accountId, name));
     }
 
-    public void deposit(String accountId, int amount){
+    public void deposit(String accountId, BigDecimal amount){
         BankAccount account = repository.findById(accountId)
                 .orElseThrow(() -> new IllegalArgumentException("Account not found: " + accountId));
         account.deposit(amount);
         repository.save(account);
     }
 
-    public void withdraw(String accountId, int amount){
+    public void withdraw(String accountId, BigDecimal amount){
         BankAccount account = repository.findById(accountId)
                 .orElseThrow(() -> new IllegalArgumentException("Account not found: " + accountId));
         account.withdraw(amount);
         repository.save(account);
     }
 
-    public int getBalance(String accountId){
+    public BigDecimal getBalance(String accountId){
         return repository.findById(accountId)
                 .map(BankAccount::getBalance)
                 .orElseThrow(() -> new IllegalArgumentException("Account not found: " + accountId));
