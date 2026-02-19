@@ -3,7 +3,6 @@ package safebank.repository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import safebank.domain.BankAccount;
-import safebank.service.BankAccountService;
 
 import java.util.Optional;
 
@@ -13,13 +12,11 @@ class MemoryBankAccountRepositoryTest {
 
     private BankAccount account;
     private BankAccountRepository bankRepo;
-    private BankAccountService bankService;
 
     @BeforeEach
     void setUp(){
         account = new BankAccount("AC-DE-2026-01", "Michael Marques");
         bankRepo = new MemoryBankAccountRepository();
-        bankService = new BankAccountService(bankRepo);
 
         bankRepo.save(account);
     }

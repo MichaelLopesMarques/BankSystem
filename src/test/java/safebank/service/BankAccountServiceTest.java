@@ -3,6 +3,7 @@ package safebank.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import safebank.domain.BankAccount;
+import safebank.exception.AccountNotFoundException;
 import safebank.exception.InsufficientBalanceException;
 import safebank.exception.InvalidAmountException;
 import safebank.repository.BankAccountRepository;
@@ -30,7 +31,7 @@ class BankAccountServiceTest {
     @Test
     public void createAccount_test(){
         bankService.createAccount("AC-DE-2026-02", "Michael Marques");
-        assertTrue(() -> bankRepo.existsById("AC-DE-2026-02"));
+        assertTrue(bankRepo.existsById("AC-DE-2026-02"));
     }
 
     @Test
@@ -41,7 +42,7 @@ class BankAccountServiceTest {
     @Test
     public void deposit_returnRightBalance(){
         bankService.deposit("AC-DE-2026-01", BigDecimal.valueOf(100));
-        assertEquals(BigDecimal.valueOf(100), account.getBalance());
+        assertEquals(BigDecimal.valueOf(100), bankService.getBalance("AC-DE-2026-01"));
     }
 
     @Test
@@ -52,7 +53,7 @@ class BankAccountServiceTest {
 
     @Test
     public void deposit_not_existing_account_throw_exception(){
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(AccountNotFoundException.class,
                 () -> bankService.deposit("AC-DE-2026-03", BigDecimal.valueOf(100)));
     }
 
@@ -60,7 +61,7 @@ class BankAccountServiceTest {
     public void withdraw_returnRightBalance(){
         bankService.deposit("AC-DE-2026-01", BigDecimal.valueOf(100));
         bankService.withdraw("AC-DE-2026-01", BigDecimal.valueOf(50));
-        assertEquals(BigDecimal.valueOf(50), account.getBalance());
+        assertEquals(BigDecimal.valueOf(50), bankService.getBalance("AC-DE-2026-01"));
     }
 
     @Test
@@ -77,7 +78,7 @@ class BankAccountServiceTest {
 
     @Test
     public void withdraw_not_existing_account_throw_exception(){
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(AccountNotFoundException.class,
                 () -> bankService.withdraw("AC-DE-2026-03", BigDecimal.valueOf(100)));
     }
 
@@ -88,10 +89,43 @@ class BankAccountServiceTest {
 
     @Test
     public void getBalance_throws_exception(){
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(AccountNotFoundException.class,
                 () -> bankService.getBalance("AC-DE-2026-03"));
     }
 
-    // Test for lockAccount, unlockAccount and getAccount
+    @Test
+    public void lockAccount_test(){
+        bankService.lockAccount("AC-DE-2026-01");
+        assertTrue(account.isLocked());
+    }
 
+    @Test
+    public void lockAccount_throws_exception(){
+        assertThrows(AccountNotFoundException.class,
+                () -> bankService.lockAccount("AC-DE-2026-03"));
+    }
+
+    @Test
+    public void unlockAccount_test(){
+        bankService.lockAccount("AC-DE-2026-01");
+        bankService.unlockAccount("AC-DE-2026-01");
+        assertFalse(account.isLocked());
+    }
+
+    @Test
+    public void unlockAccount_throws_exception(){
+        assertThrows(AccountNotFoundException.class,
+                () -> bankService.unlockAccount("AC-DE-2026-03"));
+    }
+
+    @Test
+    public void getAccount_test(){
+        assertEquals(account, bankService.getAccount("AC-DE-2026-01"));
+    }
+
+    @Test
+    public void getAccount_throws_exception(){
+        assertThrows(AccountNotFoundException.class,
+                () -> bankService.getAccount("AC-DE-2026-03"));
+    }
 }
