@@ -92,4 +92,6 @@ class BankAccountServiceTest {
                 () -> bankService.getBalance("AC-DE-2026-03"));
     }
 
+    // Test for lockAccount, unlockAccount and getAccount
+
 }

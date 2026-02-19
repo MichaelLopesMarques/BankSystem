@@ -13,7 +13,7 @@ public class BankAccount {
     private List<Transaction> transactions = new ArrayList<>();
     private final String id;
     private String owner;
-    private BigDecimal balance = BigDecimal.ZERO;
+    private BigDecimal balance;
     private boolean lockStatus = false;
 
     public BankAccount(String id, String owner){
@@ -30,31 +30,30 @@ public class BankAccount {
 
     public void deposit(BigDecimal amount){
         if (lockStatus){
-            throw new AccountLockedException("Account ist gesperrt");
+            throw new AccountLockedException("Account is locked");
         }
         if(balance.compareTo(amount) < 0) {
             balance = balance.add(amount);
             transactions.add(Transaction.deposit(amount, balance));
         } else {
-            throw new InvalidAmountException("Betrag: " + amount + " muss über 0 sein");
+            throw new InvalidAmountException("Amount: " + amount + " must be above 0 ");
         }
     }
 
     public void withdraw(BigDecimal amount) {
         if (lockStatus) {
-            throw new AccountLockedException("Account ist gesperrt");
+            throw new AccountLockedException("Account is locked");
         }
         if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new InvalidAmountException("Betrag muss positiv sein: " + amount);
+            throw new InvalidAmountException("Amount must be positive: " + amount);
         }
         if (balance.compareTo(amount) < 0) {
             throw new InsufficientBalanceException(
-                    "Error! Guthaben: " + balance + ", Verlangt: " + amount);
+                    "Error! Balance: " + balance + ", Amount: " + amount);
         }
         balance = balance.subtract(amount);
         transactions.add(Transaction.withdraw(amount, balance));
     }
-
 
     public void lock(){
         lockStatus = true;

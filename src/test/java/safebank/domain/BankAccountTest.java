@@ -136,7 +136,7 @@ class BankAccountTest {
     @Test
     public void transactionHistory_Type(){
         account.deposit(BigDecimal.valueOf(50));
-        Transaction typeTest = account.getTransactionHistory().get(0);
+        Transaction typeTest = account.getTransactionHistory().getFirst();
         assertEquals("DEPOSIT", typeTest.getType());
     }
 
