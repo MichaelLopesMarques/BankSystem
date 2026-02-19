@@ -11,7 +11,7 @@ class TransactionTest {
 
     // Transaction deposit() Tests
     @Test
-    public void deposit_Transaction_return(){
+    public void deposit_Transaction_shouldSuccess(){
         Transaction transaction = Transaction.deposit(BigDecimal.valueOf(50), BigDecimal.valueOf(450));
         assertAll("Transaction fields",
                 () -> assertEquals("DEPOSIT", transaction.getType()),
@@ -21,14 +21,14 @@ class TransactionTest {
     }
 
     @Test
-    public void deposit_trackingOfTransactionhistory(){
+    public void deposit_shouldTrackTransactionhistory(){
         BankAccount account = new BankAccount("AC-DE-2026-01", "Michael Marques");
 
         account.deposit(BigDecimal.valueOf(100));
         List<Transaction> history = account.getTransactionHistory();
 
         assertEquals(1, history.size());
-        Transaction lastTransaction = history.get(0);
+        Transaction lastTransaction = history.getFirst();
 
         assertAll("Transaction fields",
                 () -> assertEquals("DEPOSIT", lastTransaction.getType()),
@@ -42,7 +42,7 @@ class TransactionTest {
 
     // Transaction withdraw() Tests
     @Test
-    public void withdraw_Transaction_return(){
+    public void withdraw_Transaction_shouldSuccess(){
         Transaction transaction = Transaction.withdraw(BigDecimal.valueOf(50), BigDecimal.valueOf(450));
         assertAll("Transaction fields",
                 () -> assertEquals("WITHDRAW", transaction.getType()),
@@ -52,7 +52,7 @@ class TransactionTest {
     }
 
     @Test
-    public void withdraw_trackingOfTransactionhistory(){
+    public void withdraw_shouldTrackTransactionhistory(){
         BankAccount account = new BankAccount("AC-DE-2026-01", "Michael Marques");
 
         account.deposit(BigDecimal.valueOf(200));

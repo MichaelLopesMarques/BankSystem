@@ -22,7 +22,7 @@ class MemoryBankAccountRepositoryTest {
     }
 
     @Test
-    public void findById_returnAccount_whenExists(){
+    public void findById_shouldReturnAccount_whenExists(){
         Optional<BankAccount> result = bankRepo.findById("AC-DE-2026-01");
 
         assertTrue(result.isPresent());
@@ -30,26 +30,26 @@ class MemoryBankAccountRepositoryTest {
     }
 
     @Test
-    public void findById_returnEmpty_whenAccountNotExists(){
+    public void findById_shouldReturnEmpty_whenAccountNotExists(){
         Optional<BankAccount> result = bankRepo.findById("AC-DE-2026-02");
 
         assertTrue(result.isEmpty());
     }
 
     @Test
-    public void save_returnTrue_whenExists(){
+    public void save_shouldReturnTrue_whenExists(){
         BankAccount testAccount = new BankAccount("AC-DE-2026-02", "Anton Marques");
         bankRepo.save(testAccount);
         assertTrue(bankRepo.existsById("AC-DE-2026-02"));
     }
 
     @Test
-    public void existsByID_returnTrue_whenExists(){
+    public void existsByID_shouldReturnTrue_whenExists(){
         assertTrue(bankRepo.existsById("AC-DE-2026-01"));
     }
 
     @Test
-    public void existsByID_returnFalse_whenAccountNotExists(){
+    public void existsByID_shouldReturnFalse_whenAccountNotExists(){
         assertFalse(bankRepo.existsById("AC-DE-2026-03"));
     }
 }

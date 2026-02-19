@@ -22,29 +22,29 @@ class BankAccountTest {
 
     // deposit Tests
     @Test
-    public void deposit_increase_balance(){
+    public void deposit_shouldIncreaseBalance(){
         account.deposit(BigDecimal.valueOf(100));
         assertEquals(BigDecimal.valueOf(100), account.getBalance());
     }
 
     @Test
-    public void deposit_zero_throws_exception(){
+    public void deposit_shouldThrowException_whenZero(){
         assertThrows(InvalidAmountException.class, () -> account.deposit(BigDecimal.valueOf(0)));
     }
 
     @Test
-    public void deposit_negative_throws_exception(){
+    public void deposit_shouldThrowException_whenNegative(){
         assertThrows(InvalidAmountException.class, () -> account.deposit(BigDecimal.valueOf(-50)));
     }
 
     @Test
-    public void deposit_lockedAccount_throws_exception(){
+    public void deposit_shouldThrowException_whenAccountLocked(){
         account.lock();
         assertThrows(AccountLockedException.class, () -> account.deposit(BigDecimal.valueOf(50)));
     }
 
     @Test
-    public void deposit_lockedAccount_switchToUnlock_transaction(){
+    public void deposit_shouldSuccess_whenLockedAccountSwitchToUnlock(){
         account.lock();
         account.unlock();
         account.deposit(BigDecimal.valueOf(50));
@@ -55,36 +55,36 @@ class BankAccountTest {
 
     // withdraw Tests
     @Test
-    public void withdraw_reduce_balance(){
+    public void withdraw_shouldReduceBalance(){
         account.deposit(BigDecimal.valueOf(100));
         account.withdraw(BigDecimal.valueOf(50));
         assertEquals(BigDecimal.valueOf(50), account.getBalance());
     }
 
     @Test
-    public void withdraw_zero_throws_exception(){
+    public void withdraw_shouldThrowException_whenZero(){
         assertThrows(InvalidAmountException.class, () -> account.withdraw(BigDecimal.valueOf(0)));
     }
 
     @Test
-    public void withdraw_negative_throws_exception(){
+    public void withdraw_shouldThrowException_whenNegative(){
         assertThrows(InvalidAmountException.class, () -> account.withdraw(BigDecimal.valueOf(-50)));
     }
 
     @Test
-    public void withdraw_more_than_balance(){
+    public void withdraw_shouldThrowException_whenMoreThanBalance(){
         account.deposit(BigDecimal.valueOf(100));
         assertThrows(InsufficientBalanceException.class, () -> account.withdraw(BigDecimal.valueOf(200)));
     }
 
     @Test
-    public void withdraw_lockedAccount_throws_exception(){
+    public void withdraw_shouldThrowException_whenLockedAccount(){
         account.lock();
         assertThrows(AccountLockedException.class, () -> account.withdraw(BigDecimal.valueOf(200)));
     }
 
     @Test
-    public void withdraw_lockedAccount_switchToUnlock_transaction(){
+    public void withdraw_shouldSuccess_whenLockedAccountSwitchToUnlock(){
         account.lock();
         account.unlock();
         account.deposit(BigDecimal.valueOf(50));
@@ -96,13 +96,13 @@ class BankAccountTest {
 
     // isLocked Tests
     @Test
-    public void isLocked_locked_status(){
+    public void isLocked_ShouldReturnTrue(){
         account.lock();
         assertTrue(account.isLocked());
     }
 
     @Test
-    public void isLocked_unlocked_status(){
+    public void isLocked_ShouldReturnFalse(){
         account.lock();
         account.unlock();
         assertFalse(account.isLocked());
@@ -112,7 +112,7 @@ class BankAccountTest {
 
     // transactionHistory Tests
     @Test
-    public void transactionHistory_contains_all_transactions(){
+    public void transactionHistory_shouldContainsAllTransactions(){
         account.deposit(BigDecimal.valueOf(100));
         account.withdraw(BigDecimal.valueOf(50));
         account.deposit(BigDecimal.valueOf(80));
@@ -122,26 +122,26 @@ class BankAccountTest {
     }
 
     @Test
-    public void transactionHistory_NotNull(){
+    public void transactionHistory_shouldBeNotNull(){
         List<Transaction> history = account.getTransactionHistory();
         assertNotNull(history);
     }
 
     @Test
-    public void transactionHistory_isEmpty(){
+    public void transactionHistory_shouldBeEmpty(){
         List<Transaction> history = account.getTransactionHistory();
         assertTrue(history.isEmpty());
     }
 
     @Test
-    public void transactionHistory_Type(){
+    public void transactionHistory_shouldBeRightType(){
         account.deposit(BigDecimal.valueOf(50));
         Transaction typeTest = account.getTransactionHistory().getFirst();
         assertEquals("DEPOSIT", typeTest.getType());
     }
 
     @Test
-    public void transactionHistory_InvalidChange(){
+    public void transactionHistory_shouldThrowException_whenInvalidChange(){
         List<Transaction> history = account.getTransactionHistory();
         assertThrows(UnsupportedOperationException.class, () ->
                 history.add(new Transaction("DEPOSIT", BigDecimal.valueOf(10), BigDecimal.valueOf(10))));
